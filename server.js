@@ -9,7 +9,17 @@ var io = require('socket.io')(http);
 
 app.use(express.static(__dirname + '/public'));
 
-io.on('connection', function(){
+io.on('connection', function(socket){
+    
+    socket.on('message', function(message){
+        console.log('Message received');
+        
+        socket.broadcast.emit('message', message);
+    })
+    
+    socket.emit('message', {
+        text: 'welcome to chat'
+    });
     console.log('User connected');
 });
 
